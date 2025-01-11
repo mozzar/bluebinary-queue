@@ -1,0 +1,19 @@
+meta {
+  name: store
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/coasters/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "godziny_do": "17:00",
+    "liczba_personelu": 8,
+    "liczba_klientow": 100
+  }
+}

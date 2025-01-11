@@ -1,0 +1,64 @@
+services:
+  #development
+  development_fpm:
+    container_name: development_fpm
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    environment:
+      - CI_ENVIRONMENT=development
+      - REDIS_HOST=host.docker.internal
+      - REDIS_PORT=6379
+    networks:
+      - development_network
+  nginx_development:
+    image: nginx:latest
+    container_name: nginx_development
+    networks:
+      - development_network
+    volumes:
+      - ./nginx/development.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/html
+    ports:
+      - "8081:8081"
+    depends_on:
+      - development_fpm
+
+  #production
+  production_fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile-production
+    container_name: production_fpm
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    environment:
+      - CI_ENVIRONMENT=production
+      - REDIS_HOST=host.docker.internal
+      - REDIS_PORT=6379
+
+    networks:
+      - production_network
+
+  nginx_production:
+    image: nginx:latest
+    container_name: nginx_production
+    networks:
+      - production_network
+    volumes:
+      - ./nginx/production.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/html
+    ports:
+      - "8080:8080"
+    depends_on:
+      - production_fpm
+
+networks:
+  development_network:
+    driver: bridge
+  production_network:
+    driver: bridge

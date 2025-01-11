@@ -1,0 +1,17 @@
+meta {
+  name: update
+  type: http
+  seq: 1
+}
+
+put {
+  url: http://localhost:8080/api/coasters/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "godziny_do": "16:30"
+  }
+}

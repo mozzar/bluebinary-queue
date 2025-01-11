@@ -1,0 +1,19 @@
+meta {
+  name: store
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/coasters/1/wagons
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "ilosc_miejsc": 30,
+    "predkosc_wagonu": 1.0
+    
+  }
+}
